@@ -1,27 +1,13 @@
 import React from 'react';
-import axios from 'axios';
-import './App.css';
+import Register from './components/Register';
 
-function App() {
-    const [message, setMessage] = React.useState("");
-
-    React.useEffect(() => {
-        axios.get('http://localhost:8000/')
-            .then(response => {
-                setMessage(response.data.Hello);
-            })
-            .catch(error => {
-                console.error("There was an error!", error);
-            });
-    }, []);
-
+// Main App component
+const App = () => {
     return (
-        <div className="App">
-            <header className="App-header">
-                <h1>{message}</h1>
-            </header>
+        <div>
+            <Register />  {/* Include the Register component */}
         </div>
     );
-}
+};
 
 export default App;
