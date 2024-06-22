@@ -1,17 +1,45 @@
 from pydantic import BaseModel
+from typing import List, Optional
 
-# Pydantic model for user creation request
-class UserCreate(BaseModel):
+class WorkoutBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+
+class WorkoutCreate(WorkoutBase):
+    pass
+
+class Workout(WorkoutBase):
+    id: int
+    owner_id: int
+
+    class Config:
+        orm_mode = True
+
+class MealPlanBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+
+class MealPlanCreate(MealPlanBase):
+    pass
+
+class MealPlan(MealPlanBase):
+    id: int
+    owner_id: int
+
+    class Config:
+        orm_mode = True
+
+class UserBase(BaseModel):
     username: str
     email: str
+
+class UserCreate(UserBase):
     password: str
 
-# Pydantic model for user response
-class User(BaseModel):
+class User(UserBase):
     id: int
-    username: str
-    email: str
+    workouts: List[Workout] = []
+    meal_plans: List[MealPlan] = []
 
-    # Configuration to support ORM mode
     class Config:
         orm_mode = True

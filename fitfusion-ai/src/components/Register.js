@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 // Component for user registration form
-const Register = () => {
+const Register = ({ onSuccess }) => {
     const [username, setUsername] = useState('');  // State for username
     const [email, setEmail] = useState('');  // State for email
     const [password, setPassword] = useState('');  // State for password
@@ -23,8 +23,14 @@ const Register = () => {
                 password,
             });
             console.log("Response:", response.data);
+            if (onSuccess) {
+                onSuccess(response.data.id);  // Call onSuccess with the user ID
+            }
         } catch (error) {
             console.error("Error:", error);
+            if (error.response) {
+                console.error("Response Error:", error.response.data);
+            }
         }
     };
 
