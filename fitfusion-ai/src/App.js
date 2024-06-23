@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
 import Register from './components/Register';
+import Login from './components/Login';
 import Workout from './components/Workout';
 import MealPlan from './components/MealPlan';
 
-// Main App component
 const App = () => {
     const [userId, setUserId] = useState(null);
 
-    const handleRegistrationSuccess = (id) => {
-        setUserId(id);  // Set the user ID after successful registration
+    const handleLoginSuccess = (id) => {
+        setUserId(id);
+    };
+
+    const handleRegisterSuccess = (id) => {
+        setUserId(id);
     };
 
     return (
         <div>
-            <Register onSuccess={handleRegistrationSuccess} />  {/* Include the Register component */}
-            {userId && (
+            {userId ? (
                 <div>
-                    <Workout userId={userId} />  {/* Include the Workout component */}
-                    <MealPlan userId={userId} />  {/* Include the MealPlan component */}
+                    <h1>Welcome User {userId}</h1>
+                    <Workout userId={userId} />
+                    <MealPlan userId={userId} />
+                </div>
+            ) : (
+                <div>
+                    <Login onSuccess={handleLoginSuccess} />
+                    <Register onSuccess={handleRegisterSuccess} />
                 </div>
             )}
         </div>

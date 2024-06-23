@@ -1,9 +1,20 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List
+
+class UserBase(BaseModel):
+    username: str
+    email: str
+
+class UserCreate(UserBase):
+    password: str
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
 
 class WorkoutBase(BaseModel):
-    name: str
-    description: Optional[str] = None
+    title: str
+    description: str
 
 class WorkoutCreate(WorkoutBase):
     pass
@@ -16,8 +27,8 @@ class Workout(WorkoutBase):
         orm_mode = True
 
 class MealPlanBase(BaseModel):
-    name: str
-    description: Optional[str] = None
+    title: str
+    description: str
 
 class MealPlanCreate(MealPlanBase):
     pass
@@ -29,17 +40,16 @@ class MealPlan(MealPlanBase):
     class Config:
         orm_mode = True
 
-class UserBase(BaseModel):
-    username: str
-    email: str
-
-class UserCreate(UserBase):
-    password: str
-
 class User(UserBase):
     id: int
-    workouts: List[Workout] = []
-    meal_plans: List[MealPlan] = []
+
+    class Config:
+        orm_mode = True
+
+class UserWithPlans(UserBase):
+    id: int
+    meal_plans: List[MealPlan]
+    workouts: List[Workout]
 
     class Config:
         orm_mode = True
