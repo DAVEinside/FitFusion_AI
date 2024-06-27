@@ -1,8 +1,8 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from . import models, schemas, crud, database
-
+from typing import List
 app = FastAPI()
 
 # Set up CORS
@@ -38,12 +38,19 @@ def read_user(user_id: int, db: Session = Depends(database.get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
-@app.get("/users/{user_id}/workouts/", response_model=list[schemas.Workout])
+@app.put("/users/{user_id}", response_model=schemas.User)
+def update_user(user_id: int, user: schemas.UserUpdate, db: Session = Depends(database.get_db)):
+    db_user = crud.get_user_by_id(db, user_id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return crud.update_user(db=db, user_id=user_id, user=user)
+
+@app.get("/users/{user_id}/workouts/", response_model=List[schemas.Workout])
 def read_workouts(user_id: int, db: Session = Depends(database.get_db)):
     workouts = crud.get_workouts(db, user_id=user_id)
     return workouts
 
-@app.get("/users/{user_id}/meal_plans/", response_model=list[schemas.MealPlan])
+@app.get("/users/{user_id}/meal_plans/", response_model=List[schemas.MealPlan])
 def read_meal_plans(user_id: int, db: Session = Depends(database.get_db)):
     meal_plans = crud.get_meal_plans(db, user_id=user_id)
     return meal_plans

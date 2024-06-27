@@ -1,9 +1,32 @@
+from pydantic import BaseModel, EmailStr
 from typing import List, Optional
-from pydantic import BaseModel
+
+class UserBase(BaseModel):
+    username: str
+    email: EmailStr
+
+class UserCreate(UserBase):
+    password: str
+
+class UserUpdate(UserBase):
+    username: Optional[str] = None
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+class User(UserBase):
+    id: int
+    is_active: bool
+
+    class Config:
+        orm_mode = True  # Update to from_attributes if using Pydantic V2
 
 class WorkoutBase(BaseModel):
-    name: str
-    description: Optional[str] = None
+    title: str
+    description: str
 
 class WorkoutCreate(WorkoutBase):
     pass
@@ -13,11 +36,11 @@ class Workout(WorkoutBase):
     owner_id: int
 
     class Config:
-        from_attributes = True
+        orm_mode = True  # Update to from_attributes if using Pydantic V2
 
 class MealPlanBase(BaseModel):
-    name: str
-    description: Optional[str] = None
+    title: str
+    description: str
 
 class MealPlanCreate(MealPlanBase):
     pass
@@ -27,34 +50,4 @@ class MealPlan(MealPlanBase):
     owner_id: int
 
     class Config:
-        from_attributes = True
-
-class UserBase(BaseModel):
-    username: str
-    email: str
-
-class UserCreate(UserBase):
-    password: str
-
-class UserLogin(BaseModel):
-    username: str
-    password: str
-
-class UserUpdate(BaseModel):
-    id: int
-    full_name: Optional[str] = None
-    age: Optional[int] = None
-    height: Optional[int] = None
-    weight: Optional[int] = None
-    fitness_goals: Optional[str] = None
-    dietary_preferences: Optional[str] = None
-    health_conditions: Optional[str] = None
-
-class User(UserBase):
-    id: int
-    is_active: bool
-    workouts: List[Workout] = []
-    meal_plans: List[MealPlan] = []
-
-    class Config:
-        from_attributes = True
+        orm_mode = True  # Update to from_attributes if using Pydantic V2

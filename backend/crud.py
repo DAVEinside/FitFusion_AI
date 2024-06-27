@@ -33,6 +33,15 @@ def authenticate_user(db: Session, username: str, password: str):
         return None
     return user
 
+def update_user(db: Session, user_id: int, user: schemas.UserUpdate):
+    db_user = get_user_by_id(db, user_id)
+    if db_user:
+        for key, value in user.dict(exclude_unset=True).items():
+            setattr(db_user, key, value)
+        db.commit()
+        db.refresh(db_user)
+    return db_user
+
 def create_workout(db: Session, workout: schemas.WorkoutCreate, user_id: int):
     db_workout = models.Workout(**workout.dict(), owner_id=user_id)
     db.add(db_workout)

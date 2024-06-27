@@ -10,7 +10,7 @@ const ProfileForm = ({ user }) => {
             const response = await axios.put(`http://localhost:8000/users/${user.id}`, profile);
             setProfile(response.data);
         } catch (error) {
-            console.error('Error:', error.response.data);
+            console.error('Error:', error.response?.data || error.message);
         }
     };
 
