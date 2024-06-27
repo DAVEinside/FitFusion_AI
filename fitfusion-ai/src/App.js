@@ -1,33 +1,26 @@
 import React, { useState } from 'react';
 import Register from './components/Register';
 import Login from './components/Login';
-import Workout from './components/Workout';
-import MealPlan from './components/MealPlan';
+import ProfileForm from './components/ProfileForm';
 
 const App = () => {
-    const [userId, setUserId] = useState(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [user, setUser] = useState(null);
 
-    const handleLoginSuccess = (id) => {
-        setUserId(id);
-    };
-
-    const handleRegisterSuccess = (id) => {
-        setUserId(id);
+    const handleLogin = (userData) => {
+        setUser(userData);
+        setIsLoggedIn(true);
     };
 
     return (
         <div>
-            {userId ? (
+            {!isLoggedIn ? (
                 <div>
-                    <h1>Welcome User {userId}</h1>
-                    <Workout userId={userId} />
-                    <MealPlan userId={userId} />
+                    <Register onRegister={handleLogin} />
+                    <Login onLogin={handleLogin} />
                 </div>
             ) : (
-                <div>
-                    <Login onSuccess={handleLoginSuccess} />
-                    <Register onSuccess={handleRegisterSuccess} />
-                </div>
+                <ProfileForm user={user} />
             )}
         </div>
     );

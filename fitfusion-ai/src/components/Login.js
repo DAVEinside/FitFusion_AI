@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Login = () => {
+const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [userData, setUserData] = useState(null);
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -13,9 +12,9 @@ const Login = () => {
                 username: username,
                 password: password,
             });
-            setUserData(response.data);
+            onLogin(response.data); // Pass the user data to the onLogin function
         } catch (error) {
-            console.error('Error:', error.response.data);
+            console.error('Error:', error.response ? error.response.data : error.message);
         }
     };
 
@@ -37,23 +36,6 @@ const Login = () => {
                 />
                 <button type="submit">Login</button>
             </form>
-            {userData && (
-                <div>
-                    <h2>Welcome, {userData.username}!</h2>
-                    <h3>Meal Plans</h3>
-                    <ul>
-                        {userData.meal_plans.map((plan) => (
-                            <li key={plan.id}>{plan.title}: {plan.description}</li>
-                        ))}
-                    </ul>
-                    <h3>Workout Plans</h3>
-                    <ul>
-                        {userData.workouts.map((workout) => (
-                            <li key={workout.id}>{workout.title}: {workout.description}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
         </div>
     );
 };

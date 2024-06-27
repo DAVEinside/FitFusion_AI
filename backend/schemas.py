@@ -1,5 +1,33 @@
+from typing import List, Optional
 from pydantic import BaseModel
-from typing import List
+
+class WorkoutBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+
+class WorkoutCreate(WorkoutBase):
+    pass
+
+class Workout(WorkoutBase):
+    id: int
+    owner_id: int
+
+    class Config:
+        from_attributes = True
+
+class MealPlanBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+
+class MealPlanCreate(MealPlanBase):
+    pass
+
+class MealPlan(MealPlanBase):
+    id: int
+    owner_id: int
+
+    class Config:
+        from_attributes = True
 
 class UserBase(BaseModel):
     username: str
@@ -12,44 +40,21 @@ class UserLogin(BaseModel):
     username: str
     password: str
 
-class WorkoutBase(BaseModel):
-    title: str
-    description: str
-
-class WorkoutCreate(WorkoutBase):
-    pass
-
-class Workout(WorkoutBase):
+class UserUpdate(BaseModel):
     id: int
-    owner_id: int
-
-    class Config:
-        orm_mode = True
-
-class MealPlanBase(BaseModel):
-    title: str
-    description: str
-
-class MealPlanCreate(MealPlanBase):
-    pass
-
-class MealPlan(MealPlanBase):
-    id: int
-    owner_id: int
-
-    class Config:
-        orm_mode = True
+    full_name: Optional[str] = None
+    age: Optional[int] = None
+    height: Optional[int] = None
+    weight: Optional[int] = None
+    fitness_goals: Optional[str] = None
+    dietary_preferences: Optional[str] = None
+    health_conditions: Optional[str] = None
 
 class User(UserBase):
     id: int
+    is_active: bool
+    workouts: List[Workout] = []
+    meal_plans: List[MealPlan] = []
 
     class Config:
-        orm_mode = True
-
-class UserWithPlans(UserBase):
-    id: int
-    meal_plans: List[MealPlan]
-    workouts: List[Workout]
-
-    class Config:
-        orm_mode = True
+        from_attributes = True
