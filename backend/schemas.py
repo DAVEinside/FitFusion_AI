@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import List, Optional
+from typing import Optional
 
 class UserBase(BaseModel):
     username: str
@@ -7,26 +7,51 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
-
-class UserUpdate(UserBase):
-    username: Optional[str] = None
-    email: Optional[EmailStr] = None
-    password: Optional[str] = None
+    age: Optional[int] = None
+    height: Optional[float] = None
+    weight: Optional[float] = None
+    fitness_goals: Optional[str] = None
+    dietary_preferences: Optional[str] = None
+    health_conditions: Optional[str] = None
 
 class UserLogin(BaseModel):
     username: str
     password: str
 
-class User(UserBase):
-    id: int
-    is_active: bool
+class UserProfile(UserBase):
+    age: Optional[int] = None
+    height: Optional[float] = None
+    weight: Optional[float] = None
+    fitness_goals: Optional[str] = None
+    dietary_preferences: Optional[str] = None
+    health_conditions: Optional[str] = None
 
     class Config:
-        orm_mode = True  # Update to from_attributes if using Pydantic V2
+        from_attributes = True
+
+class UserUpdate(BaseModel):
+    age: Optional[int] = None
+    height: Optional[float] = None
+    weight: Optional[float] = None
+    fitness_goals: Optional[str] = None
+    dietary_preferences: Optional[str] = None
+    health_conditions: Optional[str] = None
+
+class User(UserBase):
+    id: int
+    age: Optional[int] = None
+    height: Optional[float] = None
+    weight: Optional[float] = None
+    fitness_goals: Optional[str] = None
+    dietary_preferences: Optional[str] = None
+    health_conditions: Optional[str] = None
+
+    class Config:
+        from_attributes = True
 
 class WorkoutBase(BaseModel):
-    title: str
-    description: str
+    name: str
+    description: Optional[str] = None
 
 class WorkoutCreate(WorkoutBase):
     pass
@@ -36,11 +61,11 @@ class Workout(WorkoutBase):
     owner_id: int
 
     class Config:
-        orm_mode = True  # Update to from_attributes if using Pydantic V2
+        from_attributes = True
 
 class MealPlanBase(BaseModel):
-    title: str
-    description: str
+    name: str
+    description: Optional[str] = None
 
 class MealPlanCreate(MealPlanBase):
     pass
@@ -50,4 +75,4 @@ class MealPlan(MealPlanBase):
     owner_id: int
 
     class Config:
-        orm_mode = True  # Update to from_attributes if using Pydantic V2
+        from_attributes = True

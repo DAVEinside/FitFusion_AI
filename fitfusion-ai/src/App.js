@@ -1,28 +1,22 @@
+// src/App.js
 import React, { useState } from 'react';
-import Register from './components/Register';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './components/Login';
-import ProfileForm from './components/ProfileForm';
+import Register from './components/Register';
+import Dashboard from './components/Dashboard';
 
 const App = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
 
-    const handleLogin = (userData) => {
-        setUser(userData);
-        setIsLoggedIn(true);
-    };
-
     return (
-        <div>
-            {!isLoggedIn ? (
-                <div>
-                    <Register onRegister={handleLogin} />
-                    <Login onLogin={handleLogin} />
-                </div>
-            ) : (
-                <ProfileForm user={user} />
-            )}
-        </div>
+        <Router>
+            <Routes>
+                <Route path="/login" element={<Login setUser={setUser} />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/dashboard" element={<Dashboard user={user} />} />
+                <Route path="/" element={<Navigate to="/login" />} />
+            </Routes>
+        </Router>
     );
 };
 

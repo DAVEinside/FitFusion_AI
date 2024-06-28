@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -9,8 +9,12 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
-    is_active = Column(Boolean, default=True)  # Add this line
-
+    age = Column(Integer, nullable=True)
+    height = Column(Float, nullable=True)
+    weight = Column(Float, nullable=True)
+    fitness_goals = Column(String, nullable=True)
+    dietary_preferences = Column(String, nullable=True)
+    health_conditions = Column(String, nullable=True)
     workouts = relationship("Workout", back_populates="owner")
     meal_plans = relationship("MealPlan", back_populates="owner")
 
@@ -19,7 +23,7 @@ class Workout(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
-    description = Column(String, index=True)
+    description = Column(String)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="workouts")
@@ -29,7 +33,7 @@ class MealPlan(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
-    description = Column(String, index=True)
+    description = Column(String)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="meal_plans")

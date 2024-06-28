@@ -1,9 +1,12 @@
+// src/components/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const Login = ({ onLogin }) => {
+const Login = ({ setUser }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -12,9 +15,10 @@ const Login = ({ onLogin }) => {
                 username: username,
                 password: password,
             });
-            onLogin(response.data); // Pass the user data to the onLogin function
+            setUser(response.data); // Set the logged-in user
+            navigate('/dashboard');  // Navigate to the dashboard on successful login
         } catch (error) {
-            console.error('Error:', error.response ? error.response.data : error.message);
+            console.error('Error:', error.response.data);
         }
     };
 
@@ -36,6 +40,7 @@ const Login = ({ onLogin }) => {
                 />
                 <button type="submit">Login</button>
             </form>
+            <p>Don't have an account? <a href="/register">Register</a></p>
         </div>
     );
 };

@@ -1,31 +1,32 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
-from .database import engine, SessionLocal
 from passlib.context import CryptContext
 
-pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# Retrieve a user by username
 def get_user_by_username(db: Session, username: str):
     return db.query(models.User).filter(models.User.username == username).first()
 
-# Retrieve a user by email
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
-def get_user_by_id(db: Session, user_id: int):
-    return db.query(models.User).filter(models.User.id == user_id).first()
-
 def create_user(db: Session, user: schemas.UserCreate):
     hashed_password = pwd_context.hash(user.password)
-    db_user = models.User(username=user.username, email=user.email, hashed_password=hashed_password)
+    db_user = models.User(
+        username=user.username,
+        email=user.email,
+        hashed_password=hashed_password,
+        age=user.age,
+        height=user.height,
+        weight=user.weight,
+        fitness_goals=user.fitness_goals,
+        dietary_preferences=user.dietary_preferences,
+        health_conditions=user.health_conditions
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
-
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
 
 def authenticate_user(db: Session, username: str, password: str):
     user = get_user_by_username(db, username)
@@ -33,14 +34,21 @@ def authenticate_user(db: Session, username: str, password: str):
         return None
     return user
 
-def update_user(db: Session, user_id: int, user: schemas.UserUpdate):
-    db_user = get_user_by_id(db, user_id)
-    if db_user:
-        for key, value in user.dict(exclude_unset=True).items():
-            setattr(db_user, key, value)
-        db.commit()
-        db.refresh(db_user)
-    return db_user
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_user_by_id(db: Session, user_id: int):
+    return db.query(models.User).filter(models.User.id == user_id).first()
+
+def update_user_profile(db: Session, user_id: int, user_update: schemas.UserUpdate):
+    user = get_user_by_id(db, user_id)
+    if not user:
+        return None
+    for key, value in user_update.dict(exclude_unset=True).items():
+        setattr(user, key, value)
+    db.commit()
+    db.refresh(user)
+    return user
 
 def create_workout(db: Session, workout: schemas.WorkoutCreate, user_id: int):
     db_workout = models.Workout(**workout.dict(), owner_id=user_id)
