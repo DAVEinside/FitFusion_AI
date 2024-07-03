@@ -108,6 +108,7 @@ const ProfileForm = ({ user }) => {
                     <p>Fitness Goals: {profile.fitness_goals}</p>
                     <p>Dietary Preferences: {profile.dietary_preferences}</p>
                     <p>Health Conditions: {profile.health_conditions}</p>
+                    <p>Sex: {profile.sex}</p>
                     <button onClick={() => setIsEditing(true)}>Edit Profile</button>
                 </div>
             )}

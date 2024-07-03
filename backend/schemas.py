@@ -13,6 +13,7 @@ class UserCreate(UserBase):
     fitness_goals: Optional[str] = None
     dietary_preferences: Optional[str] = None
     health_conditions: Optional[str] = None
+    sex: Optional[str] = None
 
 class UserLogin(BaseModel):
     username: str
@@ -25,6 +26,7 @@ class UserProfile(UserBase):
     fitness_goals: Optional[str] = None
     dietary_preferences: Optional[str] = None
     health_conditions: Optional[str] = None
+    sex: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -36,6 +38,7 @@ class UserUpdate(BaseModel):
     fitness_goals: Optional[str] = None
     dietary_preferences: Optional[str] = None
     health_conditions: Optional[str] = None
+    sex: Optional[str] = None
 
 class User(UserBase):
     id: int
@@ -45,6 +48,7 @@ class User(UserBase):
     fitness_goals: Optional[str] = None
     dietary_preferences: Optional[str] = None
     health_conditions: Optional[str] = None
+    sex: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -76,3 +80,7 @@ class MealPlan(MealPlanBase):
 
     class Config:
         from_attributes = True
+
+class UserPlans(BaseModel):
+    meal_plan: str
+    workout_plan: str

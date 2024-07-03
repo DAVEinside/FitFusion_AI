@@ -11,7 +11,8 @@ const Register = () => {
         weight: '',
         fitness_goals: '',
         dietary_preferences: '',
-        health_conditions: ''
+        health_conditions: '',
+        sex: ''
     });
 
     const handleChange = (e) => {
@@ -94,6 +95,13 @@ const Register = () => {
                     name="health_conditions"
                     placeholder="Health Conditions"
                     value={formData.health_conditions}
+                    onChange={handleChange}
+                />
+                 <input
+                    type="text"
+                    name="sex"
+                    placeholder="Sex"
+                    value={formData.sex}
                     onChange={handleChange}
                 />
                 <button type="submit">Register</button>

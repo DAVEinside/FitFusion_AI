@@ -21,7 +21,8 @@ def create_user(db: Session, user: schemas.UserCreate):
         weight=user.weight,
         fitness_goals=user.fitness_goals,
         dietary_preferences=user.dietary_preferences,
-        health_conditions=user.health_conditions
+        health_conditions=user.health_conditions,
+        sex=user.sex
     )
     db.add(db_user)
     db.commit()

@@ -12,6 +12,8 @@ const Profile = ({ profile }) => {
             <p><strong>Fitness Goals:</strong> {profile.fitness_goals}</p>
             <p><strong>Dietary Preferences:</strong> {profile.dietary_preferences}</p>
             <p><strong>Health Conditions:</strong> {profile.health_conditions}</p>
+            <p><strong>Health Conditions:</strong> {profile.health_conditions}</p>
+            <p><strong>sSex:</strong> {profile.sex}</p>
         </div>
     );
 };
