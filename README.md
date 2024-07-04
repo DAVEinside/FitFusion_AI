@@ -91,9 +91,19 @@ FitFusion AI utilizes a multi-agent system with the following components:
 - **Node.js**: Required for running the React frontend.
 
 ### Backend Setup
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-repo/fitfusion-ai.git
    cd fitfusion-ai/backend
+
+![image](https://github.com/DAVEinside/FitFusion_AI/assets/46652703/19559a07-dfda-4a32-b2f6-e6199fb4b025)
+
+![image](https://github.com/DAVEinside/FitFusion_AI/assets/46652703/14ddc3a7-2690-44cd-b0ea-68e4fd50f50e)
+
+###Access the Application
+**Open your browser and navigate to http://localhost:3000 to access the FitFusion AI application.
+
+
 
 
